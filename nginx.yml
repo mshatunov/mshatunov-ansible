@@ -1,0 +1,29 @@
+- hosts: proxy
+  become: yes
+  become_user: root
+  tasks:
+    - name: install required system packages
+      apt: name={{ item }} state=latest update_cache=yes
+      loop: ['docker.io', 'python3-pip']
+    - name: Install Docker Module for Python
+      pip:
+        name: docker
+    - name: create directory
+      file:
+        path: /etc/nginx/conf.d
+        state: directory
+    - name: copy configs
+      template:
+        src: ./files/nginx/conf.d/mshatunov.conf
+        dest: /etc/nginx/conf.d/mshatunov.conf
+    - name: start nginx container
+      docker_container:
+        name: nginx
+        image: nginx:1.17.10
+        state: started
+        restart: yes
+        volumes:
+          - /etc/nginx/conf.d:/etc/nginx/conf.d:ro
+        ports:
+          - "80:80"
+          - "443:443"

@@ -1,0 +1,5 @@
+[proxy:vars]
+ansible_python_interpreter=/usr/bin/python3
+
+[proxy]
+84.201.148.17
