@@ -1,4 +1,4 @@
 # mshatunov-ansible
 
 ## run nginx
-```ansible-playbook nginx.yml -i inventory```
+```ansible-playbook --ask-vault-pass nginx.yml -i inventory```

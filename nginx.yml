@@ -8,7 +8,7 @@
     - name: Install Docker Module for Python
       pip:
         name: docker
-    - name: create directory
+    - name: create conf directory
       file:
         path: /etc/nginx/conf.d
         state: directory
@@ -16,6 +16,18 @@
       template:
         src: ./files/nginx/conf.d/mshatunov.conf
         dest: /etc/nginx/conf.d/mshatunov.conf
+    - name: create cert directory
+      file:
+        path: /etc/nginx/cert
+        state: directory
+    - name: copy certs
+      template:
+        src: ./files/nginx/cert/fullchain.pem
+        dest: /etc/nginx/cert/fullchain.pem
+    - name: copy certs
+      template:
+        src: ./files/nginx/cert/privkey.pem
+        dest: /etc/nginx/cert/privkey.pem
     - name: start nginx container
       docker_container:
         name: nginx
@@ -24,6 +36,7 @@
         restart: yes
         volumes:
           - /etc/nginx/conf.d:/etc/nginx/conf.d:ro
+          - /etc/nginx/cert:/etc/nginx/cert/:ro
         ports:
           - "80:80"
           - "443:443"
