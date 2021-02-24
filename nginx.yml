@@ -16,20 +16,24 @@
         state: directory
     - name: copy configs
       template:
-        src: ./files/nginx/conf.d/mshatunov.conf
-        dest: /etc/nginx/conf.d/mshatunov.conf
+        src: ./files/nginx/conf.d/{{ item }}
+        dest: /etc/nginx/conf.d/{{ item }}
+      with_items:
+        - mshatunov.conf
+        - mshatunov-dev.conf
     - name: create cert directory
       file:
         path: /etc/nginx/cert
         state: directory
     - name: copy certs
       template:
-        src: ./files/nginx/cert/fullchain.pem
-        dest: /etc/nginx/cert/fullchain.pem
-    - name: copy certs
-      template:
-        src: ./files/nginx/cert/privkey.pem
-        dest: /etc/nginx/cert/privkey.pem
+        src: ./files/nginx/cert/{{ item }}
+        dest: /etc/nginx/cert/{{ item }}
+      with_items:
+        - privkey.pem
+        - fullchain.pem
+        - privkey-dev.pem
+        - fullchain-dev.pem
     - name: start nginx container
       docker_container:
         name: nginx
