@@ -19,7 +19,6 @@
         src: ./files/nginx/conf.d/{{ item }}
         dest: /etc/nginx/conf.d/{{ item }}
       with_items:
-        - mshatunov.conf
         - mshatunov-dev.conf
     - name: create cert directory
       file:
@@ -30,8 +29,6 @@
         src: ./files/nginx/cert/{{ item }}
         dest: /etc/nginx/cert/{{ item }}
       with_items:
-        - privkey.pem
-        - fullchain.pem
         - privkey-dev.pem
         - fullchain-dev.pem
     - name: start nginx container
